@@ -40,7 +40,7 @@ const STATE = {
 
 // ═══ FIREBASE INIT ═══
 const FIREBASE_CONFIG = {
-    apiKey: "AIzaSyDvaasGECJAlGDg2-KNnasJfzok1Fs7iro",
+    apiKey: "AIzaSyDvaasGECJAlGdg2-KNnasJfzok1Fs7iro",
     authDomain: "valo-check.firebaseapp.com",
     projectId: "valo-check",
     storageBucket: "valo-check.firebasestorage.app",
