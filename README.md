@@ -78,14 +78,14 @@ netlify deploy --prod
 
 ### 3. Configure API Keys
 1. Open `/admin` panel
-2. Login with `admin@besttoolshub.online` / `valo2026`
+2. Login with `naderd415@gmail.com` / `valo2026`
 3. Go to **API Keys** section
 4. Add your Gemini API key(s)
 5. The app calls Gemini directly from the browser — no server env vars needed
 
 ### 4. Access Admin Panel
 - **URL:** `/admin`
-- **Email:** `admin@besttoolshub.online`
+- **Email:** `naderd415@gmail.com`
 - **Password:** `valo2026`
 - Change password immediately after first login
 

@@ -40,12 +40,13 @@ const STATE = {
 
 // ═══ FIREBASE INIT ═══
 const FIREBASE_CONFIG = {
-    apiKey: "AIzaSyBgap4edRQinf3r69Q2dDItM9P9eSaLY-w",
-    authDomain: "valo-check-admin.firebaseapp.com",
-    projectId: "valo-check-admin",
-    storageBucket: "valo-check-admin.appspot.com",
-    messagingSenderId: "000000000000",
-    appId: "1:000000000000:web:0000000000000000"
+    apiKey: "AIzaSyDvaasGECJAlGDg2-KNnasJfzok1Fs7iro",
+    authDomain: "valo-check.firebaseapp.com",
+    projectId: "valo-check",
+    storageBucket: "valo-check.firebasestorage.app",
+    messagingSenderId: "595305842951",
+    appId: "1:595305842951:web:6acce617e0080f521c9da2",
+    measurementId: "G-7CWFC538KV"
 };
 
 if (typeof firebase !== 'undefined' && firebase.initializeApp) {
