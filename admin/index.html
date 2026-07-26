@@ -433,14 +433,14 @@
         <div class="logo-icon">🛡️</div>
         <h1>VaLo Check</h1>
         <p class="subtitle">Admin Control Panel</p>
-        <form id="loginForm" onsubmit="return handleLogin(event)">
+        <form id="loginForm">
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" id="loginEmail" class="form-input" placeholder="naderd415@gmail.com" required>
+                <input type="email" id="loginEmail" class="form-input" placeholder="naderd415@gmail.com" required autocomplete="username">
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
+                <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required autocomplete="current-password">
             </div>
             <button type="submit" class="btn btn-primary" id="loginBtn">
                 <span id="loginBtnText">Sign In</span>
@@ -914,6 +914,7 @@
     const FIREBASE_CONFIG_DEFAULT = {
         apiKey: "AIzaSyDvaasGECJAlGdg2-KNnasJfzok1Fs7iro",
         authDomain: "valo-check.firebaseapp.com",
+        databaseURL: "https://valo-check-default-rtdb.firebaseio.com",
         projectId: "valo-check",
         storageBucket: "valo-check.firebasestorage.app",
         messagingSenderId: "595305842951",
@@ -1002,74 +1003,99 @@
 
     // ===== FIREBASE INIT =====
     function initFirebase(config) {
-        try {
-            if (firebase.apps.length) {
-                firebase.apps.forEach(app => app.delete().then(() => {}));
-            }
-        } catch(e) {}
-
-        setTimeout(() => {
+        return new Promise((resolve) => {
             try {
-                firebase.initializeApp(config);
-                db = firebase.firestore();
-                addLog('success', 'Firebase initialized: ' + config.projectId);
-                return true;
+                if (firebase.apps.length) {
+                    const app = firebase.apps[0];
+                    app.delete().then(() => {
+                        try {
+                            firebase.initializeApp(config);
+                            db = firebase.firestore();
+                            addLog('success', 'Firebase initialized: ' + config.projectId);
+                            resolve(true);
+                        } catch(e) {
+                            addLog('error', 'Firebase init failed: ' + e.message);
+                            showToast('Firebase init failed', 'error');
+                            resolve(false);
+                        }
+                    }).catch(() => {
+                        try {
+                            firebase.initializeApp(config);
+                            db = firebase.firestore();
+                            addLog('success', 'Firebase initialized (fallback): ' + config.projectId);
+                            resolve(true);
+                        } catch(e) {
+                            addLog('error', 'Firebase init failed: ' + e.message);
+                            resolve(false);
+                        }
+                    });
+                } else {
+                    firebase.initializeApp(config);
+                    db = firebase.firestore();
+                    addLog('success', 'Firebase initialized: ' + config.projectId);
+                    resolve(true);
+                }
             } catch(e) {
-                addLog('error', 'Firebase init failed: ' + e.message);
+                addLog('error', 'Firebase init error: ' + e.message);
                 showToast('Firebase init failed', 'error');
-                return false;
+                resolve(false);
             }
-        }, 100);
+        });
     }
 
-    async function loadFirebaseConfig() {
-        let config = FIREBASE_CONFIG_DEFAULT;
+    const GEMINI_DEFAULT_KEY = "AIzaSyBgap4edRQinf3r69Q2dDItM9P9eSaLY-w";
 
-        // Try to load from Firestore first (if already initialized with default)
+    async function seedDefaultApiKey() {
         try {
-            const tempApp = firebase.initializeApp(FIREBASE_CONFIG_DEFAULT, 'temp_load');
-            const tempDb = tempApp.firestore();
-            const doc = await tempDb.collection('config').doc('firebase').get();
-            if (doc.exists) {
-                config = doc.data();
+            const doc = await db.collection('config').doc('api_keys').get();
+            if (!doc.exists) {
+                await db.collection('config').doc('api_keys').set({
+                    keys: [{ key: GEMINI_DEFAULT_KEY, name: 'Gemini Default', active: true, added: new Date().toISOString() }]
+                });
+                addLog('info', 'Default Gemini API key seeded');
+            } else {
+                const data = doc.data();
+                if (!data.keys || data.keys.length === 0) {
+                    await db.collection('config').doc('api_keys').set({
+                        keys: [{ key: GEMINI_DEFAULT_KEY, name: 'Gemini Default', active: true, added: new Date().toISOString() }]
+                    });
+                    addLog('info', 'Default Gemini API key added (empty list)');
+                }
             }
-            await tempApp.delete();
         } catch(e) {
-            // First time - use default
+            addLog('warn', 'Could not seed API key: ' + e.message);
         }
-
-        return config;
     }
 
     async function boot() {
         addLog('info', 'Booting admin panel...');
 
-        // Initialize with default config first
-        initFirebase(FIREBASE_CONFIG_DEFAULT);
+        await initFirebase(FIREBASE_CONFIG_DEFAULT);
 
-        // Wait a bit for init, then check Firestore for custom config
-        setTimeout(async () => {
-            try {
-                const doc = await db.collection('config').doc('firebase').get();
-                if (doc.exists) {
-                    const saved = doc.data();
-                    // If saved config differs from default, reinitialize
-                    if (saved.apiKey !== FIREBASE_CONFIG_DEFAULT.apiKey) {
-                        addLog('info', 'Loading saved Firebase config...');
-                        initFirebase(saved);
-                        setTimeout(finishBoot, 500);
-                        return;
-                    }
+        try {
+            const doc = await db.collection('config').doc('firebase').get();
+            if (doc.exists) {
+                const saved = doc.data();
+                if (saved.apiKey && saved.apiKey !== FIREBASE_CONFIG_DEFAULT.apiKey) {
+                    addLog('info', 'Loading saved Firebase config...');
+                    await initFirebase(saved);
                 }
-            } catch(e) {
-                addLog('warn', 'Could not check saved config, using default');
             }
-            setTimeout(finishBoot, 500);
-        }, 300);
+        } catch(e) {
+            addLog('warn', 'Could not check saved config, using default');
+        }
+
+        await seedDefaultApiKey();
+        finishBoot();
     }
 
     function finishBoot() {
         addLog('success', 'Firebase ready. Waiting for auth...');
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleLogin();
+        });
 
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
@@ -1103,8 +1129,7 @@
         showApp();
     }
 
-    window.handleLogin = async function(e) {
-        e.preventDefault();
+    window.handleLogin = async function() {
         const email = document.getElementById('loginEmail').value.trim();
         const pass = document.getElementById('loginPassword').value;
         const errEl = document.getElementById('authError');

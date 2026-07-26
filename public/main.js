@@ -42,6 +42,7 @@ const STATE = {
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDvaasGECJAlGdg2-KNnasJfzok1Fs7iro",
     authDomain: "valo-check.firebaseapp.com",
+    databaseURL: "https://valo-check-default-rtdb.firebaseio.com",
     projectId: "valo-check",
     storageBucket: "valo-check.firebasestorage.app",
     messagingSenderId: "595305842951",
