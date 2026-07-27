@@ -5,7 +5,7 @@ const CONFIG = {
     defaultLimit: 50,
     gemini: {
         keys: [],
-        models: ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'],
+        models: ['gemini-2.5-flash', 'gemini-1.5-flash'],
     },
 };
 
@@ -42,12 +42,10 @@ const STATE = {
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDvaasGECJAlGdg2-KNnasJfzok1Fs7iro",
     authDomain: "valo-check.firebaseapp.com",
-    databaseURL: "https://valo-check-default-rtdb.firebaseio.com",
     projectId: "valo-check",
     storageBucket: "valo-check.firebasestorage.app",
     messagingSenderId: "595305842951",
-    appId: "1:595305842951:web:6acce617e0080f521c9da2",
-    measurementId: "G-7CWFC538KV"
+    appId: "1:595305842951:web:6acce617e0080f521c9da2"
 };
 
 if (typeof firebase !== 'undefined' && firebase.initializeApp) {
@@ -1661,28 +1659,7 @@ function parseGeminiResponse(text) {
             red_flags: Array.isArray(json.red_flags) ? json.red_flags : [],
         };
     } catch (e) {
-        const fallbackScore = 50;
-        const priceMatch = cleaned.match(/(\d[\d,\.]*)/);
-        return {
-            overall_condition_score: fallbackScore,
-            condition_label: 'Fair',
-            fair_price: priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0,
-            market_min_price: 0,
-            market_max_price: 0,
-            total_estimated_repair_cost: 0,
-            total_recommended_deduction: 0,
-            fair_price_after_deductions: 0,
-            device_title: '',
-            summary: cleaned.substring(0, 500),
-            defects_analysis: [],
-            pros: [],
-            cons: [],
-            checked_visually: [],
-            unchecked_requires_manual: [],
-            recommendation: cleaned.substring(0, 500),
-            red_flags: [],
-            _rawText: cleaned,
-        };
+        return { error: true, message: 'Failed to parse AI response. Raw: ' + cleaned.substring(0, 500), _rawText: cleaned };
     }
 }
 
@@ -1695,6 +1672,13 @@ function displayResults(data) {
     const section = document.getElementById('resultsSection');
     const isAr = STATE.lang === 'ar';
     const c = COUNTRIES[STATE.country];
+
+    if (!data || data.error) {
+        const msg = data?.message || (isAr ? 'فشل تحليل الصورة. تأكد من الصورة وحاول مرة أخرى.' : 'Image analysis failed. Check the image and try again.');
+        showToast('error', msg);
+        return;
+    }
+
     const price = parseFloat(document.getElementById('priceInput').value) || 0;
     STATE.lastResult = data;
 
@@ -2163,18 +2147,19 @@ function exportReportPdf() {
     const data = STATE.lastResult;
     const isAr = STATE.lang === 'ar';
 
-    if (!data || Object.keys(data).length === 0) {
+    if (!data || data.error || Object.keys(data).length === 0) {
         alert(isAr ? 'تنبيه: لا توجد بيانات فحص — يرجى إجراء الفحص أولاً.' : 'Warning: No scan data. Run a scan first.');
         return;
     }
 
     const reportContent = typeof buildPdfReportHTML === 'function' ? buildPdfReportHTML(data) : '';
+    if (!reportContent) return;
 
     let printIframe = document.getElementById('print-pdf-iframe');
     if (!printIframe) {
         printIframe = document.createElement('iframe');
         printIframe.id = 'print-pdf-iframe';
-        printIframe.style.display = 'none';
+        printIframe.style.cssText = 'position:fixed;left:0;top:0;width:794px;height:1123px;border:none;opacity:0;pointer-events:none;z-index:-1;';
         document.body.appendChild(printIframe);
     }
 
@@ -2186,7 +2171,7 @@ function exportReportPdf() {
         '<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">' +
         '<style>' +
             '*{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}' +
-            'body{font-family:Cairo,sans-serif !important;background:#fff;color:#000;padding:0;margin:0;direction:' + (isAr ? 'rtl' : 'ltr') + ';}' +
+            'body{font-family:Cairo,sans-serif !important;background:#fff;color:#000;padding:0;margin:0;direction:' + (isAr ? 'rtl' : 'ltr') + ';opacity:1 !important;}' +
             '@page{size:A4;margin:15mm 10mm;}' +
             'table{width:100%;border-collapse:collapse;margin-bottom:20px;}' +
             'th,td{border:1px solid #cbd5e0;padding:12px;text-align:' + (isAr ? 'right' : 'left') + ';}' +
@@ -2201,7 +2186,7 @@ function exportReportPdf() {
     setTimeout(function() {
         printIframe.contentWindow.focus();
         printIframe.contentWindow.print();
-    }, 500);
+    }, 600);
 }
 
 function escapeHtml(value) {

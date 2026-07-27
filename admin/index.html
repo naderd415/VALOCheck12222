@@ -914,12 +914,10 @@
     const FIREBASE_CONFIG_DEFAULT = {
         apiKey: "AIzaSyDvaasGECJAlGdg2-KNnasJfzok1Fs7iro",
         authDomain: "valo-check.firebaseapp.com",
-        databaseURL: "https://valo-check-default-rtdb.firebaseio.com",
         projectId: "valo-check",
         storageBucket: "valo-check.firebasestorage.app",
         messagingSenderId: "595305842951",
-        appId: "1:595305842951:web:6acce617e0080f521c9da2",
-        measurementId: "G-7CWFC538KV"
+        appId: "1:595305842951:web:6acce617e0080f521c9da2"
     };
 
     const DEFAULT_ADMIN_EMAIL = "naderd415@gmail.com";
@@ -1132,13 +1130,17 @@
     window.handleLogin = async function() {
         const email = document.getElementById('loginEmail').value.trim();
         const pass = document.getElementById('loginPassword').value;
+        if (!email || !pass) return;
+
         const errEl = document.getElementById('authError');
         const btnText = document.getElementById('loginBtnText');
         const spinner = document.getElementById('loginSpinner');
+        const btn = document.getElementById('loginBtn');
 
         errEl.classList.remove('show');
         btnText.textContent = 'Signing in...';
         spinner.style.display = 'inline-block';
+        btn.disabled = true;
 
         try {
             await firebase.auth().signInWithEmailAndPassword(email, pass);
@@ -1148,14 +1150,11 @@
             errEl.textContent = mapAuthError(err.code);
             errEl.classList.add('show');
 
-            // If no users exist, create default admin
             if (err.code === 'auth/user-not-found') {
                 try {
                     addLog('info', 'No user found, creating default admin...');
-                    const cred = await firebase.auth().createUserWithEmailAndPassword(DEFAULT_ADMIN_EMAIL, DEFAULT_ADMIN_PASS);
+                    await firebase.auth().createUserWithEmailAndPassword(DEFAULT_ADMIN_EMAIL, DEFAULT_ADMIN_PASS);
                     addLog('success', 'Default admin account created');
-                    // Re-try login
-                    await firebase.auth().signInWithEmailAndPassword(email, pass);
                 } catch(createErr) {
                     if (createErr.code === 'auth/email-already-in-use') {
                         errEl.textContent = 'Incorrect password.';
@@ -1170,6 +1169,7 @@
 
         btnText.textContent = 'Sign In';
         spinner.style.display = 'none';
+        btn.disabled = false;
     };
 
     function mapAuthError(code) {
