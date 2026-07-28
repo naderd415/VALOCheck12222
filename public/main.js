@@ -40,7 +40,7 @@ const STATE = {
 
 // ═══ FIREBASE INIT ═══
 const FIREBASE_CONFIG = {
-    apiKey: "AIzaSyDvaasGECJAlGdg2-KNnasJfzok1Fs7iro",
+    apiKey: "AIzaSyDvaasGECJAlGDg2-KNnasJfzok1Fs7iro",
     authDomain: "valo-check.firebaseapp.com",
     projectId: "valo-check",
     storageBucket: "valo-check.firebasestorage.app",
@@ -2171,7 +2171,7 @@ function exportReportPdf() {
         '<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">' +
         '<style>' +
             '*{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}' +
-            'body{font-family:Cairo,sans-serif !important;background:#fff;color:#000;padding:0;margin:0;direction:' + (isAr ? 'rtl' : 'ltr') + ';opacity:1 !important;}' +
+            'body{font-family:Cairo,sans-serif !important;background:#fff !important;color:#000 !important;padding:0;margin:0;direction:' + (isAr ? 'rtl' : 'ltr') + ';opacity:1 !important;}' +
             '@page{size:A4;margin:15mm 10mm;}' +
             'table{width:100%;border-collapse:collapse;margin-bottom:20px;}' +
             'th,td{border:1px solid #cbd5e0;padding:12px;text-align:' + (isAr ? 'right' : 'left') + ';}' +
