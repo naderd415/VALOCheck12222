@@ -3,94 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="تعرف على VALO Check — منصة ذكية لفحص الأجهزة المستعملة بالذكاء الاصطناعي">
-    <meta name="robots" content="index,follow">
-    <title>VALO Check | من نحن</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg:#050508; --card:rgba(15,15,28,0.9); --border:rgba(255,255,255,0.06); --green:#00ff88; --cyan:#00d4ff; --text:#fff; --text2:#a0a0b8; --muted:#6a6a80; }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
-        .container { max-width:800px; margin:0 auto; padding:40px 20px; }
-        .back-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:rgba(0,255,136,0.1); border:1px solid rgba(0,255,136,0.3); border-radius:12px; color:var(--green); text-decoration:none; font-size:14px; font-weight:700; margin-bottom:30px; transition:all 0.2s; }
-        .back-btn:hover { background:rgba(0,255,136,0.2); transform:translateY(-2px); }
-        h1 { font-family:'Orbitron'; font-size:28px; font-weight:900; color:var(--green); margin-bottom:24px; }
-        h2 { font-size:20px; color:var(--cyan); margin:28px 0 12px; }
-        p { font-size:15px; color:var(--text2); line-height:1.9; margin-bottom:14px; }
-        ul { padding-inline-start:20px; margin-bottom:14px; }
-        li { font-size:14px; color:var(--text2); line-height:1.8; margin-bottom:6px; }
-        .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px; margin-bottom:20px; }
-        .feature { display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--border); }
-        .feature:last-child { border-bottom:none; }
-        .feature-icon { font-size:28px; flex-shrink:0; }
-        .feature h3 { font-size:16px; color:var(--text); margin-bottom:4px; }
-        .feature p { font-size:13px; margin-bottom:0; }
-        footer { margin-top:40px; padding:24px; border-top:1px solid var(--border); text-align:center; }
-        footer a { color:var(--muted); text-decoration:none; font-size:13px; margin:0 8px; }
-        footer a:hover { color:var(--green); }
-        .copy { font-size:12px; color:var(--muted); margin-top:12px; }
-    </style>
+    <title>عن VALO Check — فاحص القيمة الذكي</title>
+    <meta name="description" content="تعرف على VALO Check: أداة ذكاء اصطناعي لتحليل قيمة المنتجات المستعملة بدقة. نساعدك في البيع والشراء بثقة.">
+    <link rel="stylesheet" href="/public/style.css">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg">
 </head>
 <body>
-    <div class="container">
-        <a href="/" class="back-btn">← العودة إلى VALO Check</a>
-        <h1>من نحن</h1>
-
-        <div class="card">
-            <p>VALO Check هي منصة عالمية ذكية لفحص المنتجات المستعملة بالصور والذكاء الاصطناعي. ن使命 هو حماية المشتري من الغش وتقديم تقييم عادل ودقيق لكل منتج.</p>
-            <p>تأسست المنصة عام 2026 وتخدم المستخدمين في أكثر من 10 أسواق عالمية بعملاتهم المحلية.</p>
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">VALO <small>Check</small></span>
+            </div>
+            <a href="/" class="btn btn-sm btn-outline">العودة للرئيسية</a>
         </div>
+    </header>
 
-        <h2>رؤيتنا</h2>
-        <p>نريد أن يكون لكل مشتري أداة ذكية تحميه من الاحتيال وتساعده على اتخاذ قرارات شراء مدروسة. نؤمن بأن التكنولوجيا يمكن أن تجعل سوق المستعملات أكثر شفافية وأماناً.</p>
+    <main class="container" style="max-width:800px;margin:40px auto;padding:0 20px;">
+        <h1 style="font-size:2rem;margin-bottom:20px;">🔬 عن VALO Check</h1>
 
-        <h2>كيف يعمل VALO Check؟</h2>
-        <ul>
-            <li><strong>ارفع صورة:</strong> ارفع صورة للمنتج المستعمل (موبايل، لابتوب، سيارة، أو أي جهاز آخر)</li>
-            <li><strong>تحليل AI:</strong> يقوم محرك الذكاء الاصطناعي بتحليل الصورة واكتشاف العيوب والمواصفات</li>
-            <li><strong>تقييم السوق:</strong> نقارن السعر مع السوق المحلي في بلدك ونخبرك إذا كانت صفقة جيدة</li>
-            <li><strong>تقرير مفصل:</strong> تحصل على تقرير شامل يتضمن درجة الحالة والسعر العادل والنصائح</li>
-        </ul>
+        <section class="card" style="padding:30px;margin-bottom:20px;">
+            <h2>ما هو VALO Check؟</h2>
+            <p>VALO Check هو محرك خبير ذكي يعمل بالذكاء الاصطناعي لتحليل قيمة المنتجات المستعملة. كل ما عليك فعله هو رفع صورة للمنتج ليبدأ الخبير الاصطناعي في تحليل حالته، تحديد سعره العادل، اكتشاف عيوبه، وحساب تكلفة إصلاحه.</p>
+        </section>
 
-        <h2>الميزات الرئيسية</h2>
-        <div class="card">
-            <div class="feature">
-                <div class="feature-icon">🤖</div>
-                <div><h3>ذكاء اصطناعي متطور</h3><p>نستخدم أحدث نماذج الذكاء الاصطناعي (Gemini 2.5 Flash) لتحليل دقيق</p></div>
+        <section class="card" style="padding:30px;margin-bottom:20px;">
+            <h2>كيف يعمل؟</h2>
+            <ol style="line-height:2;padding-right:20px;">
+                <li><strong>ارفع صورة</strong> للمنتج الذي تريد فحصه</li>
+                <li><strong>اختر نوع المنتج</strong> من القائمة المتاحة (موبايل، لابتوب، تابلت، أجهزة)</li>
+                <li><strong>حدد وضعك</strong>: أنا أشتري أم أنا أبيع</li>
+                <li><strong>الخبير الاصطناعي</strong> يحلل الصورة ويقدم تقريراً مفصلاً</li>
+                <li><strong>احصل على</strong>: السعر العادل، العيوب، تكلفة الإصلاح، النصيحة النهائية</li>
+            </ol>
+        </section>
+
+        <section class="card" style="padding:30px;margin-bottom:20px;">
+            <h2>التقنية المستخدمة</h2>
+            <ul style="line-height:2;padding-right:20px;">
+                <li>🤖 <strong>Google Gemini</strong> — نموذج ذكاء اصطناعي متعدد الوسائط لتحليل الصور</li>
+                <li>☁️ <strong>Firebase</strong> — قاعدة بيانات سحابية، مصادقة، استضافة</li>
+                <li>📊 <strong>تحليل السوق</strong> — بحث فوري عن أسعار السوق المحلية حسب الدولة</li>
+                <li>🔒 <strong>خصوصية</strong> — نستخدم تشفير SSL ومعايير أمان Google Cloud</li>
+            </ul>
+        </section>
+
+        <section class="card" style="padding:30px;margin-bottom:20px;">
+            <h2>لماذا VALO Check؟</h2>
+            <p>في سوق المنتجات المستعملة، من السهل أن تدفع أكثر من السعر العادل أو أن تبيع بأقل من قيمة سلعتك. VALO Check يمنحك رأي خبير اصطناعي محايد ودقيق خلال ثوانٍ، معتمداً على تحليل الصورة وأبحاث السوق المحلية.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-links">
+                <a href="/about">عن الموقع</a>
+                <a href="/privacy">الخصوصية</a>
+                <a href="/terms">الشروط</a>
+                <a href="/cookies">الكوكيز</a>
             </div>
-            <div class="feature">
-                <div class="feature-icon">🌍</div>
-                <div><h3>تغطية عالمية</h3><p>ندعم 10 أسواق عالمية بعملاتها المحلية — مصر، السعودية، الإمارات، أمريكا، бритانيا، وأكثر</p></div>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">📱</div>
-                <div><h3>8 فئات منتجات</h3><p>موبايلات، لابتوبات، سيارات، سكوترات، ثلاجات، تكييفات، غسالات، كمبيوتر</p></div>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🔒</div>
-                <div><h3>خصوصية تامة</h3><p>صورك لا تُحفظ على خوادمنا. كل التحليلات فورية ومؤقتة</p></div>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">📊</div>
-                <div><h3>تقرير PDF</h3><p>يمكنك تنزيل تقرير مفصل بصيغة PDF لمشاركته مع البائع أو الفني</p></div>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">💰</div>
-                <div><h3>مجاني بالكامل</h3><p>لا رسوم خفية. استخدم الموقع بلا حدود</p></div>
-            </div>
+            <div class="footer-copy">&copy; 2026 VALO Check</div>
         </div>
-
-        <h2>اللغات المدعومة</h2>
-        <p>المنصة متاحة بـ 6 لغات: العربية، الإنجليزية، الفرنسية، الألمانية، الصينية، والإسبانية.</p>
-
-        <footer>
-            <a href="/">الرئيسية</a>
-            <a href="/about">من نحن</a>
-            <a href="/privacy">سياسة الخصوصية</a>
-            <a href="/cookies">ملفات تعريف الارتباط</a>
-            <a href="/terms">شروط الاستخدام</a>
-            <div class="copy">© 2026 VALO Check. جميع الحقوق محفوظة.</div>
-        </footer>
-    </div>
+    </footer>
 </body>
 </html>

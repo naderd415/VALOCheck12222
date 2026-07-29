@@ -1,8 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
-  <rect width="192" height="192" rx="32" fill="#0a0a0f"/>
-  <circle cx="96" cy="70" r="30" fill="none" stroke="#00ff88" stroke-width="4"/>
-  <line x1="116" y1="90" x2="140" y2="114" stroke="#00ff88" stroke-width="4" stroke-linecap="round"/>
-  <rect x="50" y="115" width="92" height="8" rx="4" fill="#00ff88" opacity="0.6"/>
-  <rect x="66" y="130" width="60" height="6" rx="3" fill="#00d4ff" opacity="0.5"/>
-  <text x="96" y="168" text-anchor="middle" fill="#ffffff" font-family="Arial,sans-serif" font-size="16" font-weight="bold">VALO</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="32" fill="#0a0a0f"/><text x="96" y="130" font-size="100" text-anchor="middle" fill="#00c853">🔬</text></svg>

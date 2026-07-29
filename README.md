@@ -1,139 +1,148 @@
-# VALO Check — Smart Value Inspector
+# VALO Check — Smart Value Inspector (V3 Stable)
 
 **Live:** <https://besttoolshub.online>
 
-AI-powered used-product inspection platform. Upload a photo and get an instant fair-price analysis with defect detection, repair cost estimates, and negotiation advice — all from the browser via Google Gemini AI.
+Pure Frontend + Firebase — Serverless AI-powered used product inspection platform.
 
 ## Architecture
 
-**Pure Frontend + Firebase** — no backend server.
-
 ```
-Browser
-  ├── Gemini API (direct) ─── Multi-key rotation, model fallback
-  ├── Firebase SDK (CDN) ─── Auth + Firestore (config, ads, analytics)
-  └── ipwho.is ────────────── Client-side geo detection
+Browser (Client)
+  │
+  ├── Gemini API (direct fetch) ─── Tier 1: gemini-2.5-flash
+  │                                   Tier 2: gemini-1.5-flash
+  │                                   Tier 3: OpenRouter (gemini-2.0-flash-001)
+  │
+  ├── Firebase (CDN compat SDK) ─── Auth + Firestore (config, analytics)
+  │
+  └── ipwho.is ──────────────────── Client-side geo detection
 ```
 
-### File Structure
+**No backend server. No Vercel. No Express. No Node.js.**
+
+## File Structure
 
 ```
 valo-check/
-├── index.html               Main HTML (meta, JSON-LD, body)
+├── index.html                    Main HTML (skeleton, Firebase SDKs)
 ├── public/
-│   ├── style.css            All CSS
-│   └── main.js              All logic (Gemini, Firebase, compression, UI)
+│   ├── style.css                 All UI styles (dark theme, responsive)
+│   └── main.js                   All logic (Gemini, Firebase, compression, UI)
 ├── admin/
-│   └── index.html           Admin panel (Firebase Auth + Firestore CRUD)
-├── manifest.json            PWA manifest
-├── sw.js                    Service worker (cache-first static)
-├── icons/                   PWA icons (SVG)
-├── about.html               About page
-├── privacy.html             Privacy policy
-├── cookies.html             Cookie policy
-├── terms.html               Terms of use
-├── firebase.json            Firebase Hosting config
-├── sitemap.xml              SEO sitemap
-├── robots.txt               Crawler directives
-└── README.md                This file
+│   └── index.html                Admin dashboard (Firebase Auth + Firestore CRUD)
+├── .github/workflows/
+│   └── deploy.yml                GitHub Actions → Firebase Hosting auto-deploy
+├── firebase.json                 Firebase Hosting config (rewrites, headers)
+├── manifest.json                 PWA manifest (installable)
+├── sw.js                         Service worker (cache-first static)
+├── icons/
+│   ├── icon-192.svg              PWA icon
+│   └── icon-512.svg              PWA icon
+├── about.html                    About page
+├── privacy.html                  Privacy policy
+├── terms.html                    Terms of use
+├── cookies.html                  Cookie policy
+├── sitemap.xml                   SEO sitemap
+├── robots.txt                    Crawler directives
+└── README.md                     This file
 ```
 
-## Features
+## Developer's Map (for AI Agents & Maintainers)
 
-- **Direct Gemini AI** — Client-side calls with multi-key rotation and model fallback (gemini-2.5-flash → gemini-1.5-flash)
-- **Instant Image Compression** — HTML5 Canvas compression on file selection, zero mobile lag
-- **Firebase Backend** — Auth, Firestore, real-time analytics (no custom server)
-- **Dynamic Ad System** — Admin-managed session-based ad triggers
-- **Smart Buyer Assistant** — Budget-based product suggestions per category
-- **Built-in Store** — Admin-managed product listings with WhatsApp integration
-- **Dark/Light Mode** — Theme toggle with localStorage persistence
-- **10 Product Categories** — Phone, Laptop, Car, Scooter, Fridge, AC, Washer, PC, Headphones, Monitor
-- **10 Global Markets** — EG, US, AU, SA, AE, GB, DE, FR, CN, ES
-- **6 Languages** — Arabic, English, French, German, Chinese, Spanish
-- **PDF Report** — Professional inspection certificate
-- **Admin Panel** — Firebase Auth protected
-- **PWA** — Installable, offline-ready service worker
-- **SEO Optimized** — JSON-LD, sitemap, robots.txt, compliance pages
+### Core Logic Flow
 
-## Quick Start
+```
+index.html
+  └── Loads Firebase SDKs (app, auth, firestore) in <head>
+  └── Loads public/main.js at end of <body>
 
-### 1. Deploy to Firebase Hosting
+public/main.js
+  ├── FIREBASE_CONFIG (hardcoded) ─── Initializes Firebase app + Firestore
+  ├── onSnapshot listeners ────────── Syncs 8 config docs from Firestore:
+  │     features, limits, api_keys, ads, adsense, ad_settings, categories, store
+  ├── callGeminiAPI() ─────────────── 3-tier fallback AI call:
+  │     Tier 1: Gemini 2.5 Flash (all keys)
+  │     Tier 2: Gemini 1.5 Flash (all keys)
+  │     Tier 3: OpenRouter (google/gemini-2.0-flash-001)
+  ├── buildPrompt() ───────────────── Forces market research per user country
+  ├── parseGeminiResponse() ───────── JSON parse → return {error: true} on failure
+  ├── displayResults() ────────────── Renders score, price, defects, advice
+  ├── exportReportPdf() ───────────── Hidden iframe print (background:#fff!important)
+  └── logVisitor() ────────────────── Writes to Firestore analytics/visitors/logs
+
+admin/index.html
+  ├── Firebase Auth ───────────────── Login: naderd415@gmail.com / 01024926212
+  ├── Firestore CRUD ──────────────── Manages all config docs listed above
+  └── Real-time analytics ─────────── onSnapshot visitor log + stats
+```
+
+### Key Configuration Points
+
+| File | What to change |
+|------|---------------|
+| `public/main.js` lines 42-48 | Firebase config (project ID, API key) |
+| `admin/index.html` first <script> block | Same Firebase config |
+| `public/main.js` CONFIG (top) | Gemini models list, OpenRouter URL |
+| Firestore `config/` docs | Features, limits, API keys, ads, etc. |
+
+### Adding New API Keys
+
+1. Open `/admin` → Log in with `naderd415@gmail.com` / `01024926212`
+2. Go to **API Keys** section
+3. Click **Add Key** → Enter name + key → Save
+4. Key is stored in Firestore `config/api_keys`
+5. Frontend picks it up via `onSnapshot` (realtime, no reload needed)
+
+### Deployment
 
 ```bash
+# One-time setup
 npm install -g firebase-tools
 firebase login
 firebase init hosting
+
+# Deploy
 firebase deploy --only hosting
+
+# Or push to main branch (GitHub Actions auto-deploys)
+git push origin main
 ```
 
-### 2. Open Admin Panel
+## Admin Panel
 
-Go to `https://besttoolshub.online/admin`
-
-- **Email:** `naderd415@gmail.com`
-- **Password:** `01024926212`
-- Change password immediately after first login.
-
-### 3. How to Add New API Keys (via Admin Panel)
-
-1. Log in to the Admin Panel at `/admin`.
-2. Scroll to the **API Keys** section.
-3. Click **"Add API Key"**.
-4. Enter a **Name** (e.g., "Gemini Key 1") and paste your **Key** (starts with `AIza...`).
-5. Click **Save** — the key is stored securely in Firestore.
-6. Toggle keys on/off with the switch. Active keys are used in rotation by the frontend.
-
-> The app ships with a default Gemini key pre-seeded. You can add more keys for higher rate limits or replace it entirely.
-
-### 4. Configure Firebase (if cloning)
-
-Edit the `FIREBASE_CONFIG` in both `public/main.js` and `admin/index.html`:
-
-```js
-{
-  apiKey: "AIzaSyDvaasGECJAlGDg2-KNnasJfzok1Fs7iro",
-  authDomain: "valo-check.firebaseapp.com",
-  projectId: "valo-check",
-  storageBucket: "valo-check.firebasestorage.app",
-  messagingSenderId: "595305842951",
-  appId: "1:595305842951:web:6acce617e0080f521c9da2"
-}
-```
-
-## Admin Panel Capabilities
-
-| Section | Description |
-|---------|-------------|
-| **Firebase Config** | Override Firebase settings from Firestore |
-| **API Keys** | Add/remove/toggle Gemini API keys (stored in Firestore) |
-| **Feature Toggles** | Camera, sell mode, multi-lang, PDF reports, ads |
-| **Daily Limits** | Set max scans per day per device |
-| **Ad Management** | Add/remove/toggle ad links, position types, master trigger |
-| **AdSense** | Inject AdSense code into header/footer |
-| **Ad Settings** | Delay, mobile-only, trigger enable |
-| **Categories** | Enable/disable product categories |
-| **Store** | Add/edit/delete products with WhatsApp link |
-| **Visitor Analytics** | Real-time visitor log via Firestore onSnapshot |
-| **Export/Import** | Download/upload all settings as JSON |
-| **Change Password** | Firebase Auth password update |
+- **URL:** `/admin`
+- **Login:** `naderd415@gmail.com` / `01024926212`
+- **Sections:**
+  - API Key Management (add/remove/toggle Gemini + OpenRouter keys)
+  - Feature Toggles (camera, ads, multi-lang, PDF, sell mode)
+  - Daily Limits (max scans per device per day)
+  - Ad Management (add/remove/toggle trigger ads by type)
+  - Ad Settings (delay, master toggle)
+  - AdSense Code Injection
+  - Category Enable/Disable
+  - Store Products Management
+  - Real-time Visitor Analytics (live log + total stats)
+  - Change Password
 
 ## Cost
 
-| Item | Cost |
-|------|------|
-| Firebase Hosting | **Free** (Spark plan) |
-| Firestore | **Free** (1GB storage, 50K reads/day) |
-| Gemini API | **Free** (1500 requests/day) |
+| Service | Cost |
+|---------|------|
+| Firebase Hosting | Free (Spark plan) |
+| Firestore | Free (1GB, 50K reads/day) |
+| Gemini API | Free (1500 requests/day) |
+| OpenRouter | ~$0.10/1M tokens (fallback only) |
 | Custom Domain | ~$10/year |
 | **Total** | **~$10/year** |
 
 ## Security
 
-- API keys stored in Firestore (Firebase Auth protected write access)
-- Client-side image compression (no images uploaded to server)
-- No images stored on server — ephemeral, in-memory only
-- Firebase Auth for admin panel
+- API keys stored in Firestore (Firebase Auth protected writes)
+- Client-side image compression — no images uploaded to server
+- No images stored — ephemeral in-memory processing only
+- Firebase Auth for admin panel (email/password)
 - Firestore security rules enforce admin-only writes
+- Service worker cache-first for static assets only
 - Session-based ad triggers (once per session per action)
 
 ---

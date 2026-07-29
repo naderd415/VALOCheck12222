@@ -1,30 +1,18 @@
 {
-  "name": "VALO Check - Smart Value Inspector",
+  "name": "VALO Check — Smart Value Inspector",
   "short_name": "VALO Check",
-  "description": "AI-powered used item inspector. Upload a photo and get instant condition analysis, fair price estimation, and defect detection.",
+  "description": "AI-powered used product value inspector. Upload a photo and get instant fair-price analysis.",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#0a0a0f",
-  "theme_color": "#0a0a0f",
-  "orientation": "any",
-  "scope": "/",
-  "lang": "ar",
+  "theme_color": "#00c853",
   "dir": "rtl",
-  "categories": ["utilities", "shopping"],
+  "lang": "ar",
   "icons": [
-    {
-      "src": "icons/icon-192.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-512.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
+    { "src": "/icons/icon-192.svg", "type": "image/svg+xml", "sizes": "192x192" },
+    { "src": "/icons/icon-512.svg", "type": "image/svg+xml", "sizes": "512x512" }
   ],
-  "screenshots": [],
-  "prefer_related_applications": false
+  "categories": ["utilities", "shopping"],
+  "screenshots": []
 }
