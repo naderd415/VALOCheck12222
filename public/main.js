@@ -32,7 +32,8 @@ const FIREBASE_CONFIG = {
     projectId: "valo-check",
     storageBucket: "valo-check.firebasestorage.app",
     messagingSenderId: "595305842951",
-    appId: "1:595305842951:web:6acce617e0080f521c9da2"
+    appId: "1:595305842951:web:6acce617e0080f521c9da2",
+    measurementId: "G-7CWFC538KV"
 };
 
 if (typeof firebase !== 'undefined' && firebase.initializeApp) {
@@ -80,6 +81,13 @@ function getSafeUrl(url) {
 }
 
 /* ── TRANSLATIONS ── */
+const LANG_CODES = ['ar', 'en', 'fr', 'de', 'zh', 'es'];
+const LANG_DIR = { ar: 'rtl', en: 'ltr', fr: 'ltr', de: 'ltr', zh: 'ltr', es: 'ltr' };
+
+function trackEvent(name, params) {
+    try { if (typeof gtag === 'function') gtag('event', name, params || {}); } catch {}
+}
+
 const I18N = {
     ar: {
         heroTitle: 'فاحص القيمة الذكي',
@@ -127,6 +135,98 @@ const I18N = {
         exportPdf: '📄 Export PDF',
         noData: 'No scan data available',
         dailyLimit: 'Daily scan limit reached',
+    },
+    fr: {
+        heroTitle: 'Inspecteur Intelligent de Valeur',
+        heroSubtitle: 'Téléchargez une photo d\'un produit d\'occasion et notre IA vous dira si c\'est une bonne affaire',
+        statAccuracy: 'Précision', statScans: 'Analyses faites', statSaved: 'Économisé',
+        modeBuy: '🛒 J\'achète', modeSell: '💰 Je vends',
+        selectCategory: 'Choisir le type de produit',
+        dropTitle: 'Drop your Asset Image here to Scan', dropDesc: 'Glissez-déposez ou cliquez pour sélectionner',
+        btnChoose: '📁 Choisir une image', btnCamera: '📷 Ouvrir la caméra',
+        enterPrice: 'Prix affiché (optionnel)', enterNotes: 'Notes supplémentaires (optionnel)',
+        btnAnalyze: '🔬 Lancer l\'analyse IA',
+        quickGuidePhotos: 'Que photographier ?', quickGuidePhotosDesc: 'Avant, arrière, coins, ports, étiquette du modèle.',
+        quickGuideInspect: 'Quoi inspecter ?', quickGuideInspectDesc: 'Rayures, fissures, usure de la batterie, traces d\'eau.',
+        quickGuideResult: 'Ce que vous obtenez ?', quickGuideResultDesc: 'Rapport complet : juste prix, défauts, coût de réparation.',
+        loadingAnalyze: 'Analyse de l\'image...', loadingCompare: 'Comparaison des résultats...', loadingFinal: 'Préparation du rapport...',
+        errAnalyze: 'L\'analyse a échoué. Réessayez.',
+        aiEngine: '🔬 Moteur Expert IA — Analyse instantanée',
+        buyerAssistant: '🤖 Assistant d\'achat intelligent',
+        suggestBtn: '💡 Suggérer des produits',
+        analysisResult: '🔍 Résultat de l\'analyse',
+        exportPdf: '📄 Exporter en PDF',
+        noData: 'Aucune donnée d\'analyse disponible',
+        dailyLimit: 'Limite quotidienne d\'analyses atteinte',
+    },
+    de: {
+        heroTitle: 'Intelligenter Wertprüfer',
+        heroSubtitle: 'Laden Sie ein Foto eines Gebrauchtprodukts hoch und unsere KI verrät Ihnen, ob es ein gutes Geschäft ist',
+        statAccuracy: 'Genauigkeit', statScans: 'Scans durchgeführt', statSaved: 'Gespart',
+        modeBuy: '🛒 Ich kaufe', modeSell: '💰 Ich verkaufe',
+        selectCategory: 'Produkttyp wählen',
+        dropTitle: 'Drop your Asset Image here to Scan', dropDesc: 'Ziehen & Loslassen oder klicken zum Auswählen',
+        btnChoose: '📁 Bild wählen', btnCamera: '📷 Kamera öffnen',
+        enterPrice: 'Angebotener Preis (optional)', enterNotes: 'Zusätzliche Hinweise (optional)',
+        btnAnalyze: '🔬 KI-Analyse starten',
+        quickGuidePhotos: 'Was fotografieren?', quickGuidePhotosDesc: 'Vorderseite, Rückseite, Ecken, Anschlüsse, Modellaufkleber.',
+        quickGuideInspect: 'Was prüfen?', quickGuideInspectDesc: 'Kratzer, Risse, Batterieverschleiß, Wasserschäden.',
+        quickGuideResult: 'Was erhalten Sie?', quickGuideResultDesc: 'Voller Bericht: fairer Preis, Mängel, Reparaturkosten.',
+        loadingAnalyze: 'Bild wird analysiert...', loadingCompare: 'Ergebnisse werden verglichen...', loadingFinal: 'Bericht wird erstellt...',
+        errAnalyze: 'Analyse fehlgeschlagen. Versuchen Sie es erneut.',
+        aiEngine: '🔬 KI-Experten-Engine — Sofortige Analyse',
+        buyerAssistant: '🤖 Intelligenter Kaufassistent',
+        suggestBtn: '💡 Produkte vorschlagen',
+        analysisResult: '🔍 Analyseergebnis',
+        exportPdf: '📄 Als PDF exportieren',
+        noData: 'Keine Scandaten verfügbar',
+        dailyLimit: 'Tägliches Scan-Limit erreicht',
+    },
+    zh: {
+        heroTitle: '智能价值检测器',
+        heroSubtitle: '上传二手产品照片，我们的人工智能将告诉您这是否划算',
+        statAccuracy: '准确率', statScans: '已完成扫描', statSaved: '已节省',
+        modeBuy: '🛒 我要购买', modeSell: '💰 我要出售',
+        selectCategory: '选择产品类型',
+        dropTitle: 'Drop your Asset Image here to Scan', dropDesc: '拖拽或点击选择图片',
+        btnChoose: '📁 选择图片', btnCamera: '📷 打开相机',
+        enterPrice: '标价（可选）', enterNotes: '附加说明（可选）',
+        btnAnalyze: '🔬 开始AI分析',
+        quickGuidePhotos: '拍摄什么？', quickGuidePhotosDesc: '正面、背面、边角、接口、型号标签。',
+        quickGuideInspect: '检查什么？', quickGuideInspectDesc: '划痕、裂缝、电池磨损、进水痕迹。',
+        quickGuideResult: '您将获得什么？', quickGuideResultDesc: '完整报告：公平价格、缺陷、维修费用。',
+        loadingAnalyze: '正在分析图片...', loadingCompare: '正在比较结果...', loadingFinal: '正在生成报告...',
+        errAnalyze: '分析失败，请重试。',
+        aiEngine: '🔬 AI专家引擎 — 即时分析',
+        buyerAssistant: '🤖 智能购买助手',
+        suggestBtn: '💡 推荐产品',
+        analysisResult: '🔍 分析结果',
+        exportPdf: '📄 导出PDF',
+        noData: '没有可用的扫描数据',
+        dailyLimit: '已达到每日扫描上限',
+    },
+    es: {
+        heroTitle: 'Inspector Inteligente de Valor',
+        heroSubtitle: 'Sube una foto de un producto usado y nuestra IA te dirá si es una buena oferta',
+        statAccuracy: 'Precisión', statScans: 'Escaneos realizados', statSaved: 'Ahorrado',
+        modeBuy: '🛒 Voy a comprar', modeSell: '💰 Voy a vender',
+        selectCategory: 'Selecciona el tipo de producto',
+        dropTitle: 'Drop your Asset Image here to Scan', dropDesc: 'Arrastra y suelta o haz clic para seleccionar',
+        btnChoose: '📁 Elegir imagen', btnCamera: '📷 Abrir cámara',
+        enterPrice: 'Precio mostrado (opcional)', enterNotes: 'Notas adicionales (opcional)',
+        btnAnalyze: '🔬 Iniciar análisis IA',
+        quickGuidePhotos: '¿Qué fotografiar?', quickGuidePhotosDesc: 'Frente, trasera, esquinas, puertos, etiqueta del modelo.',
+        quickGuideInspect: '¿Qué inspeccionar?', quickGuideInspectDesc: 'Rayones, grietas, desgaste de batería, marcas de agua.',
+        quickGuideResult: '¿Qué obtienes?', quickGuideResultDesc: 'Informe completo: precio justo, defectos, costo de reparación.',
+        loadingAnalyze: 'Analizando imagen...', loadingCompare: 'Comparando resultados...', loadingFinal: 'Preparando informe...',
+        errAnalyze: 'El análisis falló. Inténtalo de nuevo.',
+        aiEngine: '🔬 Motor Experto IA — Análisis instantáneo',
+        buyerAssistant: '🤖 Asistente de compra inteligente',
+        suggestBtn: '💡 Sugerir productos',
+        analysisResult: '🔍 Resultado del análisis',
+        exportPdf: '📄 Exportar PDF',
+        noData: 'No hay datos de escaneo disponibles',
+        dailyLimit: 'Límite diario de escaneos alcanzado',
     }
 };
 function getText(key) { const t = I18N[STATE.lang]; return t?.[key] || key; }
@@ -303,13 +403,15 @@ function toggleTheme() {
 }
 
 function toggleLang() {
-    STATE.lang = STATE.lang === 'ar' ? 'en' : 'ar';
+    const idx = LANG_CODES.indexOf(STATE.lang);
+    STATE.lang = LANG_CODES[(idx + 1) % LANG_CODES.length];
     localStorage.setItem('vc_lang', STATE.lang);
-    document.documentElement.dir = STATE.lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir = LANG_DIR[STATE.lang] || 'ltr';
     document.documentElement.lang = STATE.lang;
     applyI18n();
     populateCategoryPicker();
     renderSpecs();
+    trackEvent('language_switch', { lang: STATE.lang });
 }
 
 function applyI18n() {
@@ -511,6 +613,8 @@ async function startAnalysis() {
             throw new Error(getText('dailyLimit'));
         }
 
+        trackEvent('scan_start', { category: STATE.category, mode: STATE.mode, country: STATE.country });
+
         // Compress and analyze
         triggerSessionAd('scan');
         const images = STATE.compressedImages.length ? STATE.compressedImages : [STATE.imageDataUrl];
@@ -539,6 +643,7 @@ async function startAnalysis() {
         localStorage.setItem('valo_scans', String(STATE.dailyScans));
         localStorage.setItem('valo_scan_date', STATE.lastScanDate);
         logVisitor();
+        trackEvent('scan_complete', { category: STATE.category, mode: STATE.mode, country: STATE.country });
     } catch (e) {
         showToast('error', e.message || getText('errAnalyze'));
     } finally {
@@ -780,9 +885,9 @@ function initUI() {
 
     // Lang
     const savedLang = localStorage.getItem('vc_lang') || 'ar';
-    STATE.lang = savedLang;
-    document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = savedLang;
+    STATE.lang = LANG_CODES.includes(savedLang) ? savedLang : 'ar';
+    document.documentElement.dir = LANG_DIR[STATE.lang] || 'ltr';
+    document.documentElement.lang = STATE.lang;
     $('langToggle').onclick = toggleLang;
 
     // Category
