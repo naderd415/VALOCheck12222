@@ -1,3 +1,6 @@
+# VALO Check — Smart Value Inspector
+# Keywords: Used Item AI Inspector, Fair Price Calculator, VALO Check AI, AI valuation
+
 User-agent: *
 Allow: /
 Disallow: /admin
@@ -10,4 +13,4 @@ User-agent: Bingbot
 Allow: /
 Disallow: /admin
 
-Sitemap: https://besttoolshub.online/sitemap.xml
+Sitemap: https://valocheck.online/sitemap.xml

@@ -411,7 +411,7 @@ function toggleLang() {
     applyI18n();
     populateCategoryPicker();
     renderSpecs();
-    trackEvent('language_switch', { lang: STATE.lang });
+    trackEvent('valo_lang_switch', { lang: STATE.lang });
 }
 
 function applyI18n() {
@@ -613,7 +613,7 @@ async function startAnalysis() {
             throw new Error(getText('dailyLimit'));
         }
 
-        trackEvent('scan_start', { category: STATE.category, mode: STATE.mode, country: STATE.country });
+        trackEvent('valo_inspection_start', { category: STATE.category, mode: STATE.mode, country: STATE.country });
 
         // Compress and analyze
         triggerSessionAd('scan');
@@ -643,7 +643,7 @@ async function startAnalysis() {
         localStorage.setItem('valo_scans', String(STATE.dailyScans));
         localStorage.setItem('valo_scan_date', STATE.lastScanDate);
         logVisitor();
-        trackEvent('scan_complete', { category: STATE.category, mode: STATE.mode, country: STATE.country });
+        trackEvent('valo_inspection', { category: STATE.category, mode: STATE.mode, country: STATE.country });
     } catch (e) {
         showToast('error', e.message || getText('errAnalyze'));
     } finally {
@@ -792,6 +792,7 @@ function exportReportPdf() {
         alert(getText('noData'));
         return;
     }
+    trackEvent('valo_pdf_download', { category: STATE.category });
     const isAr = STATE.lang === 'ar';
     const content = buildPdfReportHTML(data);
     if (!content) return;

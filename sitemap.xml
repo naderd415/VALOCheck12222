@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url><loc>https://besttoolshub.online/</loc><priority>1.0</priority></url>
-    <url><loc>https://besttoolshub.online/about</loc><priority>0.7</priority></url>
-    <url><loc>https://besttoolshub.online/privacy</loc><priority>0.5</priority></url>
-    <url><loc>https://besttoolshub.online/terms</loc><priority>0.5</priority></url>
-    <url><loc>https://besttoolshub.online/cookies</loc><priority>0.5</priority></url>
+    <!-- VALO Check — Smart Value Inspector · Used Item AI Inspector · Fair Price Calculator -->
+    <url><loc>https://valocheck.online/</loc><priority>1.0</priority></url>
+    <url><loc>https://valocheck.online/about</loc><priority>0.7</priority></url>
+    <url><loc>https://valocheck.online/privacy</loc><priority>0.5</priority></url>
+    <url><loc>https://valocheck.online/terms</loc><priority>0.5</priority></url>
+    <url><loc>https://valocheck.online/cookies</loc><priority>0.5</priority></url>
 </urlset>

@@ -1,6 +1,8 @@
-# VALO Check — Smart Value Inspector (V3 Stable)
+# VALO Check - AI Smart Value Inspector
 
-**Live:** <https://besttoolshub.online>
+**Live:** <https://valocheck.online>
+
+**Keywords:** Used Item AI Inspector, Fair Price Calculator, VALO Check AI, AI valuation, Used phone check, Car inspection.
 
 Pure Frontend + Firebase — Serverless AI-powered used product inspection platform.
 
